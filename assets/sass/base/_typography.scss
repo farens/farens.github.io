@@ -18,13 +18,14 @@
 		line-height: 2;
 		letter-spacing: _size(letter-spacing);
 		text-transform: uppercase;
+		font-weight: bold;
 
 		@include breakpoint(xlarge) {
 			font-size: 11pt;
 		}
 
 		@include breakpoint(xsmall) {
-			font-size: 10pt;
+			font-size: 11pt;
 			line-height: 1.75;
 		}
 	}
