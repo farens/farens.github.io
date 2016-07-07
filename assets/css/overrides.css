@@ -1,3 +1,17 @@
+/*
+ Copied font awesome styles with custom class names
+ to ensure that Ad Block Plus won't block the link icons.
+ It's navigation not ads!
+*/
+
+.myfa-envelope:before {
+    content:"\f0e0"
+}
+
+.myfa-xing:before {
+    content:"\f168"
+}
+
 .myfa-linkedin:before {
     content:"\f0e1"
 }
