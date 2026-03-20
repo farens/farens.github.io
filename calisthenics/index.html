@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calisthenics Skills Map</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #232635;
+      --border: #2e3248;
+      --text: #e2e8f0;
+      --text-muted: #8892a4;
+      --t1: #27ae60;
+      --t2: #2980b9;
+      --t3: #e67e22;
+      --t4: #8e44ad;
+      --t5: #c0392b;
+      --implied: #4a5568;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 { font-size: 1.8rem; font-weight: 700; }
+    header p { color: var(--text-muted); margin-top: 0.3rem; }
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .badge {
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .t1 { background: var(--t1); color: #fff; }
+    .t2 { background: var(--t2); color: #fff; }
+    .t3 { background: var(--t3); color: #fff; }
+    .t4 { background: var(--t4); color: #fff; }
+    .t5 { background: var(--t5); color: #fff; }
+    .ti { background: var(--implied); color: #cbd5e0; border: 1px dashed #718096; }
+
+    .graph-wrapper {
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      overflow-x: auto;
+    }
+    .graph-wrapper h2 { margin-bottom: 1.2rem; font-size: 1.1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .mermaid { display: flex; justify-content: center; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.2rem;
+      padding: 2rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+      border-left: 4px solid var(--border);
+    }
+    .card.tier-1 { border-left-color: var(--t1); }
+    .card.tier-2 { border-left-color: var(--t2); }
+    .card.tier-3 { border-left-color: var(--t3); }
+    .card.tier-4 { border-left-color: var(--t4); }
+    .card.tier-5 { border-left-color: var(--t5); }
+    .card-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 0.7rem;
+    }
+    .card-header h3 { font-size: 1rem; font-weight: 700; }
+    .card p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+    .card-section { margin-top: 0.7rem; }
+    .card-section h4 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .card-section ul { padding-left: 1.1rem; }
+    .card-section li { font-size: 0.84rem; color: var(--text); margin-bottom: 0.2rem; }
+    .card-section .dep-list { display: flex; flex-wrap: wrap; gap: 0.3rem; padding-left: 0; list-style: none; }
+    .card-section .dep-list li {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .tip {
+      margin-top: 0.8rem;
+      background: var(--surface2);
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.83rem;
+      color: #a0aec0;
+      border-left: 2px solid #4299e1;
+    }
+    .tip strong { color: #63b3ed; }
+    h2.section-title {
+      padding: 1.5rem 2rem 0.5rem;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Calisthenics Skills Map</h1>
+  <p>Dependency graph, progressions and regression variants for 15 advanced skills.</p>
+</header>
+
+<div class="legend">
+  <span class="badge t1">Tier 1 — Foundation</span>
+  <span class="badge t2">Tier 2 — Beginner Calisthenics</span>
+  <span class="badge t3">Tier 3 — Intermediate</span>
+  <span class="badge t4">Tier 4 — Advanced</span>
+  <span class="badge t5">Tier 5 — Elite</span>
+  <span class="badge ti">[ implied prerequisite ]</span>
+</div>
+
+<div class="graph-wrapper">
+  <h2>Dependency Graph — arrows = "required before"</h2>
+  <div class="mermaid">
+graph TD
+
+  %% ── Tier 1 ─────────────────────────────────────────
+  DS["🦵 Deep Squat\n(Heels on Ground)"]:::t1
+  DH["🤲 2 Min Dead Hang"]:::t1
+
+  %% ── Implied prerequisites (bridges not in the list) ─
+  PU["[ Pull Ups ]"]:::ti
+  PUSH["[ Push Ups ]"]:::ti
+  HS["[ Freestanding Handstand ]"]:::ti
+  TJ["[ Tuck Jump / Back Awareness ]"]:::ti
+
+  %% ── Tier 2 ─────────────────────────────────────────
+  DCS["🦵 Deep Cossack Squat"]:::t2
+  APH["💪 Archer Push Ups"]:::t2
+  APU["💪 Archer Pull Ups"]:::t2
+
+  %% ── Tier 3 ─────────────────────────────────────────
+  PS["🦵 Pistol Squat"]:::t3
+  MU["💪 Muscle Up"]:::t3
+  LSP["⚡ L-Sit\non Parallettes"]:::t3
+  BKDF["⚡ Bent Knee\nDragon Flag"]:::t3
+  HSW["🤸 Handstand Walk"]:::t3
+
+  %% ── Tier 4 ─────────────────────────────────────────
+  HSPU["🤸 Handstand\nPush Ups"]:::t4
+  HF["⚡ Human Flag"]:::t4
+  BF["🏆 Backflip"]:::t4
+
+  %% ── Tier 5 ─────────────────────────────────────────
+  MUHS["🏆 Muscle Up →\nHandstand on Bar"]:::t5
+  LSPH["🏆 L-Sit Press\nto Handstand"]:::t5
+
+  %% ── LEG TRACK ───────────────────────────────────────
+  DS --> DCS
+  DCS --> PS
+  DS -.->|explosive base| BF
+
+  %% ── PULL TRACK ──────────────────────────────────────
+  DH --> PU
+  PU --> APU
+  APU --> MU
+
+  %% ── PUSH TRACK ──────────────────────────────────────
+  PUSH --> APH
+  APH --> HSPU
+  HS --> HSPU
+
+  %% ── HANDSTAND TRACK ─────────────────────────────────
+  HS --> HSW
+  HS --> MUHS
+  MU --> MUHS
+
+  %% ── CORE / FLAG TRACK ───────────────────────────────
+  DH --> LSP
+  LSP --> BKDF
+  BKDF --> HF
+  DH --> HF
+  PU -->|lateral strength| HF
+
+  %% ── ELITE COMBINATIONS ──────────────────────────────
+  HS --> LSPH
+  LSP --> LSPH
+  HSPU --> LSPH
+
+  %% ── BACKFLIP ────────────────────────────────────────
+  TJ --> BF
+
+  classDef t1 fill:#27ae60,color:#fff,stroke:#1e8449,stroke-width:2px
+  classDef t2 fill:#2980b9,color:#fff,stroke:#1a5276,stroke-width:2px
+  classDef t3 fill:#e67e22,color:#fff,stroke:#d35400,stroke-width:2px
+  classDef t4 fill:#8e44ad,color:#fff,stroke:#6c3483,stroke-width:2px
+  classDef t5 fill:#c0392b,color:#fff,stroke:#922b21,stroke-width:2px
+  classDef ti fill:#2d3748,color:#a0aec0,stroke:#4a5568,stroke-width:1px,stroke-dasharray:6 3
+  </div>
+</div>
+
+<h2 class="section-title">Skill Cards — Progressions & Regressions</h2>
+
+<div class="skills-grid">
+
+  <!-- TIER 1 -->
+
+  <div class="card tier-1">
+    <div class="card-header">
+      <span class="badge t1">Tier 1</span>
+      <h3>2 Min Dead Hang</h3>
+    </div>
+    <p>The absolute foundation of every pulling and hanging movement. Builds grip, shoulder girdle stability, and decompresses the spine. Do this before anything else.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>None — start here</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Assisted hang (feet on box, partial weight) — 30 s</li>
+        <li>Full passive hang — 30 s → 60 s → 90 s</li>
+        <li>Scapular hang (depress & retract shoulders) — adds active component</li>
+        <li>Full 2 min active dead hang (shoulders packed)</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Key cue:</strong> "Pack the shoulders" — don't hang passively on the joints. Actively pull the shoulder blades down and together. This is what makes it useful.</div>
+  </div>
+
+  <div class="card tier-1">
+    <div class="card-header">
+      <span class="badge t1">Tier 1</span>
+      <h3>Deep Squat (Heels on Ground)</h3>
+    </div>
+    <p>The human resting position. Without this you cannot progress to Cossack squats or pistol squats, and your backflip will always be underpowered.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>None — start here</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Heels elevated on plates — 2–5 cm elevation, work depth</li>
+        <li>Assisted squat (hold TRX / door frame) — go as deep as possible</li>
+        <li>Box squat to deep position — sit on a low box, stand explosively</li>
+        <li>Goblet squat — weight in front forces upright torso</li>
+        <li>Free deep squat, heels down, 2 min hold</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Daily habit:</strong> Spend 5–10 min/day in a deep squat. Read your phone there. Ankle mobility is the usual limiter — add ankle circles and calf stretching every session.</div>
+  </div>
+
+  <!-- TIER 2 -->
+
+  <div class="card tier-2">
+    <div class="card-header">
+      <span class="badge t2">Tier 2</span>
+      <h3>Deep Cossack Squat</h3>
+    </div>
+    <p>Lateral hip mobility drill and single-leg strength builder. The direct stepping stone to the pistol squat.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Deep Squat</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Wide stance squat shifting side to side — shallow depth</li>
+        <li>Cossack squat with elevated heel on working side</li>
+        <li>Cossack squat holding onto support (pole or TRX)</li>
+        <li>Bodyweight Cossack squat, full depth, 5×5 each side</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Key focus:</strong> Keep the working foot flat. The extended leg's toes point up. Go as deep as your hip lets you — don't force it, but accumulate volume near your end range.</div>
+  </div>
+
+  <div class="card tier-2">
+    <div class="card-header">
+      <span class="badge t2">Tier 2</span>
+      <h3>Archer Push Ups</h3>
+    </div>
+    <p>Unilateral pushing strength — each arm takes most of your bodyweight independently. Gateway to handstand push ups and one-arm push up territory.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Regular Push Ups (20+ clean reps)</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Wide push ups — extra width = more load on each arm</li>
+        <li>Archer push up on knees — reduce bodyweight load</li>
+        <li>Archer push up with fist on a low block (elevated support side)</li>
+        <li>Slow negative archer push up (3–5 s down, push up normally)</li>
+        <li>Full archer push up, 3×8 each side</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Wrist care:</strong> Use push-up handles or fists if wrists ache. Strengthen the wrist extensors specifically — they're underdeveloped in most gym-goers.</div>
+  </div>
+
+  <div class="card tier-2">
+    <div class="card-header">
+      <span class="badge t2">Tier 2</span>
+      <h3>Archer Pull Ups</h3>
+    </div>
+    <p>The direct precursor to the muscle up. One arm bends fully while the other stays extended — teaches you to pull to one side of your body, which is exactly the muscle up motion.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>2 Min Dead Hang</li><li>10+ strict pull ups</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Wide-grip pull ups — 15+ clean reps</li>
+        <li>Uneven pull ups (one hand on towel slung over bar)</li>
+        <li>Archer pull up with band assisting the bending arm</li>
+        <li>Slow archer pull up negatives — 5 s down</li>
+        <li>Full archer pull ups, 3×5 each side</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Lat vs. bicep:</strong> Think "elbow to hip" not "chin to bar." The lat drives the movement. If your bicep gives out first, you haven't found the lat yet.</div>
+  </div>
+
+  <!-- TIER 3 -->
+
+  <div class="card tier-3">
+    <div class="card-header">
+      <span class="badge t3">Tier 3</span>
+      <h3>Pistol Squat</h3>
+    </div>
+    <p>Full single-leg squat to the ground. Requires the full package: ankle mobility, hip flexor flexibility, quad/glute strength, and balance.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Deep Squat</li><li>Deep Cossack Squat</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Assisted pistol (hold TRX or ring) — full depth with support</li>
+        <li>Box pistol — squat to a box (reduces depth, builds pattern)</li>
+        <li>Elevated heel pistol — plates under heel reduce ankle demand</li>
+        <li>Counterbalance pistol — arms extended forward for balance</li>
+        <li>Full pistol squat, 5×3 each side</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Hamstring flexibility:</strong> The free leg must stay horizontal. If it drifts down or you round your back, your hamstrings are the limiter — work Jefferson curls and RDL stretches.</div>
+  </div>
+
+  <div class="card tier-3">
+    <div class="card-header">
+      <span class="badge t3">Tier 3</span>
+      <h3>Muscle Up</h3>
+    </div>
+    <p>The king of bar work. A pull up that transitions into a dip on top of the bar. Requires pulling power, an explosive "hip-to-bar" kip or strict strength, and shoulder mobility in the turnover.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Archer Pull Ups (5 each side)</li><li>15+ strict pull ups</li><li>Bar dips (10+)</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>High pull ups — pull until bar is at chest/navel</li>
+        <li>Jumping muscle up — jump to above bar, lower slowly</li>
+        <li>Banded muscle up — band reduces load on the pull</li>
+        <li>Kipping muscle up — use swing for momentum (acceptable step)</li>
+        <li>Strict muscle up — no swing, pure strength</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>The transition is the wall:</strong> Most people can pull high enough but can't rotate the wrists forward. Practice "false grip" (wrist over bar) on hangs and ring rows to get comfortable in that position.</div>
+  </div>
+
+  <div class="card tier-3">
+    <div class="card-header">
+      <span class="badge t3">Tier 3</span>
+      <h3>L-Sit on Parallettes</h3>
+    </div>
+    <p>Isometric hold with legs horizontal and body above the supports. Brutal on hip flexors, triceps, and core compression. Foundation of the entire gymnastics press world.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>2 Min Dead Hang</li><li>Dip strength (push-down)</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Tuck L-sit — knees pulled to chest, feet off ground — 10 s holds</li>
+        <li>One-leg L-sit — one leg extended, one tucked</li>
+        <li>L-sit with heels dragging floor — partial load off hip flexors</li>
+        <li>Parallette push-down hold (body above bars, legs angled)</li>
+        <li>Full L-sit, 3×10–15 s, building to 30 s</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Hip flexor weakness vs. compression:</strong> Most people lack hip flexor strength to hold the legs horizontal, not just core. Add hanging leg raises and seated leg lifts to target this specifically.</div>
+  </div>
+
+  <div class="card tier-3">
+    <div class="card-header">
+      <span class="badge t3">Tier 3</span>
+      <h3>Bent Knee Dragon Flag</h3>
+    </div>
+    <p>Body supported only at shoulders, with bent knees. The accessible version of Bruce Lee's dragon flag. Teaches the entire posterior chain to work as a rigid plank.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>L-Sit (10 s+)</li><li>Strong hollow body hold</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Hollow body hold on floor — 30 s with no sag</li>
+        <li>Negative dragon flag — tuck, then slowly lower with straight body</li>
+        <li>Bent knee dragon flag hold — 3–5 s isometric in lowered position</li>
+        <li>Bent knee dragon flag, slow negative — 5 s down</li>
+        <li>Straight leg dragon flag — ultimate form</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>No hip sag allowed:</strong> The moment your hips break, the movement is over. It's better to hold a tucked position perfectly than a partially extended one that sags. Quality over range.</div>
+  </div>
+
+  <div class="card tier-3">
+    <div class="card-header">
+      <span class="badge t3">Tier 3</span>
+      <h3>Handstand Walk</h3>
+    </div>
+    <p>Freestanding handstand with controlled forward movement. Requires solid static handstand and the ability to shift weight through the fingertips to correct balance.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Freestanding Handstand (30 s)</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Wall handstand — back to wall, build shoulder endurance</li>
+        <li>Chest-to-wall handstand — harder, more upright position</li>
+        <li>Handstand kick-up and balance attempts — off the wall</li>
+        <li>Freestanding handstand hold — 10 s → 20 s → 30 s</li>
+        <li>Handstand walk — small steps, maintain alignment</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Balance is in the fingers:</strong> You correct a falling handstand by pressing through the fingertips (falling forward) or the heel of the palm (falling backward). Train "finger push-ups" and wrist flexibility heavily.</div>
+  </div>
+
+  <!-- TIER 4 -->
+
+  <div class="card tier-4">
+    <div class="card-header">
+      <span class="badge t4">Tier 4</span>
+      <h3>Handstand Push Ups</h3>
+    </div>
+    <p>Overhead pressing against full bodyweight from a handstand. Tremendous shoulder, tricep, and upper trap strength. Also demands a solid handstand base.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Archer Push Ups (8 each side)</li><li>Freestanding Handstand (20 s+)</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Pike push ups — feet on floor, hips high, head between arms</li>
+        <li>Elevated pike push ups — feet on box (more weight on arms)</li>
+        <li>Headstand push ups — balance on head as a rest point</li>
+        <li>Wall HSPU negative — kick to wall, lower slowly to head</li>
+        <li>Full wall HSPU — press back to top</li>
+        <li>Freestanding HSPU — no wall, balance demands peak</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Head position:</strong> Don't go straight down — allow a slight forward lean and touch the floor just in front of your hands. This is the proper tripod base and protects the cervical spine.</div>
+  </div>
+
+  <div class="card tier-4">
+    <div class="card-header">
+      <span class="badge t4">Tier 4</span>
+      <h3>Human Flag</h3>
+    </div>
+    <p>Body held horizontal off a vertical pole using lateral pushing and pulling. One of the most visually impressive skills and a true test of full-body lateral strength.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>2 Min Dead Hang</li><li>Bent Knee Dragon Flag</li><li>Strong pull ups and dips</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Tuck human flag — both knees pulled to chest, hold 3–5 s</li>
+        <li>One-leg out human flag — one leg extended, one tucked</li>
+        <li>Straddle human flag — legs split wide (reduces lever)</li>
+        <li>Bent-knee human flag hold — knees slightly bent</li>
+        <li>Full human flag — 3–5 s hold, building to 10 s+</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Top arm pushes, bottom arm pulls:</strong> The top arm is in a full lateral push, the bottom arm is pulling. Most beginners don't push hard enough on top. Think about crushing the pole with both hands while pushing the ceiling away with the top arm.</div>
+  </div>
+
+  <div class="card tier-4">
+    <div class="card-header">
+      <span class="badge t4">Tier 4</span>
+      <h3>Backflip</h3>
+    </div>
+    <p>Full backward rotation in the air from standing. Primarily a jump mechanics and commitment issue — not a strength issue. Fear is the main blocker once you have the base fitness.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Deep Squat (explosive base)</li><li>Tuck jumps (air awareness)</li><li>Comfortable back bend / bridge</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Back rolls on the floor — get comfortable with backward rotation</li>
+        <li>Trampoline back tuck — same movement, no floor consequence</li>
+        <li>Spotted backflip — coach / friend holds your hip and shoulder</li>
+        <li>Backflip into foam pit (gymnastics gym) — remove fear variable</li>
+        <li>Backflip on crash mat, then grass, then floor</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>The physics:</strong> Jump UP first (not back), then tuck aggressively. Most failed backflips are under-rotated because the person jumped backward instead of vertical. Train box jumps and squat jumps for the explosive component.</div>
+  </div>
+
+  <!-- TIER 5 -->
+
+  <div class="card tier-5">
+    <div class="card-header">
+      <span class="badge t5">Tier 5</span>
+      <h3>Muscle Up into Handstand on Bar</h3>
+    </div>
+    <p>After completing the muscle up, you continue pressing overhead until your body inverts into a handstand on top of the bar. Requires precise strength and balance at full extension above the bar.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>Muscle Up (strict, 3+)</li><li>Freestanding Handstand (30 s)</li><li>Bar dip to full lockout</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Muscle up + hold support position (above bar) — build pressing confidence</li>
+        <li>From support: lean forward slowly, shift weight to wrists</li>
+        <li>Spotted press to handstand on bar</li>
+        <li>Low bar handstand (bar at waist height) — easier kick-up</li>
+        <li>Full bar handstand kick-up from muscle up</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Wrist shift is critical:</strong> As you press up, your wrists must rotate from a thumbs-forward bar grip to a thumbs-backward grip supporting a handstand. Practice this rotation in isolation first while standing.</div>
+  </div>
+
+  <div class="card tier-5">
+    <div class="card-header">
+      <span class="badge t5">Tier 5</span>
+      <h3>L-Sit Press to Handstand</h3>
+    </div>
+    <p>From an L-sit, compress into a tuck, then slowly press upward into a handstand — no kick, no jump. Pure pressing strength through an extreme range. Arguably the hardest press in gymnastics.</p>
+    <div class="card-section">
+      <h4>Prerequisites</h4>
+      <ul class="dep-list"><li>L-Sit (20 s+)</li><li>Freestanding Handstand (30 s)</li><li>Handstand Push Ups (5+)</li><li>Pike flexibility (flat pike sit)</li></ul>
+    </div>
+    <div class="card-section">
+      <h4>Regression Ladder</h4>
+      <ul>
+        <li>Tuck planche — lean forward from tuck, shift weight above wrists</li>
+        <li>Tuck press to handstand — press from tucked position (shorter lever)</li>
+        <li>Straddle press to handstand — legs wide reduces lever significantly</li>
+        <li>Negative straddle press — hold handstand, slowly lower to straddle L</li>
+        <li>Full L-sit press (pike press) to handstand</li>
+      </ul>
+    </div>
+    <div class="tip"><strong>Compression is the limiter:</strong> You need to fold your torso onto your thighs with straight legs (compression flexibility). Add daily pancake stretches, pike sits with dorsiflexion, and standing forward folds. This alone takes months.</div>
+  </div>
+
+</div>
+
+<div style="padding: 2rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.82rem;">
+  <p><strong>Recommended focus order:</strong> Start simultaneously on Tier 1 (dead hang & deep squat daily). Move to Tier 2 once you have 10 pull ups and can squat deep. Run all tracks in parallel — legs, pull, push, core. Don't wait to "finish" one track before starting another.</p>
+  <p style="margin-top: 0.5rem;"><strong>Timeline reality check:</strong> With consistent training (4–5 sessions/week), expect 6–12 months to reach Tier 3, 18–24 months to Tier 4, and 3+ years to master Tier 5 skills. The implied prerequisites (pull ups, push ups, handstand) should be trained concurrently from day one.</p>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      background: '#1a1d27',
+      primaryColor: '#27ae60',
+      edgeLabelBackground: '#1a1d27',
+      lineColor: '#4a5568',
+    },
+    flowchart: { curve: 'basis', padding: 20 }
+  });
+</script>
+</body>
+</html>
